@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import json
 import os, sys, re
 from itertools import islice
@@ -30,18 +32,18 @@ output_path.parent.mkdir(parents=True, exist_ok=True)
 global_assignments_map = {}
 
 php_danger_functions_list = [
-    # "exec",
-    # "eval",
-    # "system",
-    # "popen",
-    # "proc_open",
-    # "shell_exec",
-    # "pcntl_exec",
-    # "fopen",
-    # "move_uploaded_file",
-    # "file_get_contents",
-    # "mysql_query",
-    # "pg_execute",
+    "exec",
+    "eval",
+    "system",
+    "popen",
+    "proc_open",
+    "shell_exec",
+    "pcntl_exec",
+    "fopen",
+    "move_uploaded_file",
+    "file_get_contents",
+    "mysql_query",
+    "pg_execute",
     "pg_query",
     "unserialize"
 ]
