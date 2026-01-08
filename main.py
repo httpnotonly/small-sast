@@ -187,6 +187,7 @@ def find_interesting(dangerous_functions_list, user_input_list):
                     finding["variable"] = evil_input_places.get(function_place)
                     finding["channel"] = global_assignments_map.get(filename).get(evil_input_places.get(function_place))
                     finding["code_sample"] = code
+                    finding["severity"] = "MEDIUM_RARE"
                     finding["code_before_function"] = code_before_line
                     result.append(finding)
     return result
