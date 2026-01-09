@@ -139,7 +139,8 @@ def get_code_from_file(filename, linenumber):
 def get_code_range_from_file(filename, linenumber, lines_before):
     start = max(0, int(linenumber) - int(lines_before) - 1)
     end = int(linenumber) - 1  # current line is not interesting, we have get_code_from_file for it
-
+    if linenumber is None or linenumber == 0:
+        end = 1
     with open(filename, "r", encoding="utf-8", errors="ignore") as f:
         lines = list(islice(f, start, end))
 
