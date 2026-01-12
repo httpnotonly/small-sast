@@ -137,14 +137,20 @@ def get_code_from_file(filename, linenumber):
     return code
 
 def get_code_range_from_file(filename, linenumber, lines_before):
-    start = max(0, int(linenumber) - int(lines_before) - 1)
-    end = int(linenumber) - 1  # current line is not interesting, we have get_code_from_file for it
-    if linenumber is None or linenumber == 0:
-        end = 1
-    with open(filename, "r", encoding="utf-8", errors="ignore") as f:
-        lines = list(islice(f, start, end))
+    try:
+        linenumber = int(linenumber)
+        lines_before = int(lines_before)
+    except (TypeError, ValueError):
+        return ""
 
-    return "".join(lines)
+    if linenumber < 1:
+        return ""
+
+    start = max(0, linenumber - lines_before - 1)
+    end = max(start, linenumber - 1)
+
+    with open(filename, "r", encoding="utf-8", errors="ignore") as f:
+        return "".join(islice(f, start, end))
 
 def search_user_input(user_input_list, filename, linenumber):
     result = {}
@@ -186,7 +192,10 @@ def find_interesting(dangerous_functions_list, user_input_list):
                     finding["line_number"] = int(linenumber) + 1
                     finding["function_name"] = evil_functions_places.get(function_place)
                     finding["variable"] = evil_input_places.get(function_place)
-                    finding["channel"] = global_assignments_map.get(filename).get(evil_input_places.get(function_place))
+                    finding["channel"] = (
+                        global_assignments_map.get(filename, {})
+                        .get(evil_input_places.get(function_place), "")
+                    )
                     finding["code_sample"] = code
                     finding["severity"] = "MEDIUM_RARE"
                     finding["code_before_function"] = code_before_line
